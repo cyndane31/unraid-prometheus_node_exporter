@@ -10,6 +10,7 @@
   <!ENTITY pluginURL "&gitURL;/&name;.plg">
   <!ENTITY plugin    "/boot/config/plugins/&name;">
   <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
+  <!ENTITY exec      "node_exporter">
 ]>
 
 <PLUGIN  name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0">
@@ -55,13 +56,13 @@
     echo 'start_parameters=' > "&plugin;/settings.cfg"
   fi
 
-  if [ -z "$(pidof prometheus_node_exporter)" ]; then
+  if [ -z "$(pidof &exec;)" ]; then
     START_PARAMS="$(cat &plugin;/settings.cfg | cut -d '=' -f2-)"
     echo "-------------Starting Prometheus Node Exporter!--------------"
     if [ -z "$START_PARAMS" ]; then
-      echo "/usr/bin/prometheus_node_exporter" | at now
+      echo "/usr/bin/&exec;" | at now
     else
-      echo "/usr/bin/prometheus_node_exporter "$START_PARAMS"" | at now
+      echo "/usr/bin/&exec; "$START_PARAMS"" | at now
     fi
   else
     echo
@@ -78,8 +79,9 @@ echo "-------------------------------------------"
 echo "---Uninstalling prometheus_node_exporter---"
 echo "-------------------------------------------"
 # Remove plugin related files
-kill $(pidof prometheus_node_exporter) 2>/dev/null
+kill $(pidof &exec;) 2>/dev/null
 removepkg &name;-&version;
+rm -rf /usr/bin/&exec;
 rm -rf /usr/local/emhttp/plugins/&name;
 rm -rf &plugin;
 echo
