@@ -3,7 +3,8 @@
   <!ENTITY name      "prometheus_node_exporter">
   <!ENTITY author    "Nick Miller">
   <!ENTITY version   "v1.9.1">
-  <!ENTITY md5       "bc7fe61f4dc29b2960e33b5dab8a9263">
+  <!ENTITY md5       "5c201cb76a89e41f39b0a5a9b9959bfb">
+  <!ENTITY launch    "Settings/Node Exporter">
   <!ENTITY github     "cyndane31/unraid-&name;">
   <!ENTITY gitURL    "https://github.com/&github;/raw/master">
   <!ENTITY pluginURL "&gitURL;/&name;.plg">
@@ -11,7 +12,7 @@
   <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
 ]>
 
-<PLUGIN  name="&name;" author="&author;" version="&version;" pluginURL="&pluginURL;" min="6.9.0">
+<PLUGIN  name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0">
 
 <CHANGES>
 
