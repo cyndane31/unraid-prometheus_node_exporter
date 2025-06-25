@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "prometheus_node_exporter">
   <!ENTITY author    "Nick Miller">
-  <!ENTITY version   "v1.9.1">
-  <!ENTITY md5       "5c201cb76a89e41f39b0a5a9b9959bfb">
+  <!ENTITY version   "2025.06.25">
+  <!ENTITY md5       "e123fa6571e109e061313db4b59b39c1">
   <!ENTITY launch    "Settings/Node Exporter">
   <!ENTITY github     "cyndane31/unraid-&name;">
   <!ENTITY gitURL    "https://github.com/&github;/raw/master">
