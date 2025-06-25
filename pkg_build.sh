@@ -22,5 +22,5 @@ makepkg -l y -c y "$WORKING_DIR/packages/$PLUGIN_NAME-$VERSION.tgz"
 MD5=$(md5sum "$WORKING_DIR/packages/$PLUGIN_NAME-$VERSION.tgz" | awk '{print $1}')
 echo "$MD5" >"$WORKING_DIR/packages/$PLUGIN_NAME-$VERSION.tgz.md5"
 
-sed -i -e "s/ENTITY version \"[^\"]+\"/ENTITY version\"$LATEST\"/" "$WORKING_DIR/prometheus_node_exporter.plg"
-sed -i -e "s/ENTITY md5 \"[^\"]+\"/ENTITY md5\"$MD5\"/" "$WORKING_DIR/prometheus_node_exporter.plg"
+sed -i -r "s/(ENTITY version\s*\")[^\"]+\"/\1$VERSION\"/" "$WORKING_DIR/prometheus_node_exporter.plg"
+sed -i -r "s/(ENTITY md5\s*\")[^\"]+\"/\1$MD5\"/" "$WORKING_DIR/prometheus_node_exporter.plg"
