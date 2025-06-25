@@ -18,9 +18,10 @@ tar -xvzf "$BUILD_DIR/$DOWNLOAD_FILE" --strip-components=1 -C "source/usr/bin" "
 
 cd $WORKING_DIR/source
 
-makepkg -l y -c y "$WORKING_DIR/packages/$PLUGIN_NAME-$VERSION.tgz"
-MD5=$(md5sum "$WORKING_DIR/packages/$PLUGIN_NAME-$VERSION.tgz" | awk '{print $1}')
-echo "$MD5" >"$WORKING_DIR/packages/$PLUGIN_NAME-$VERSION.tgz.md5"
+DATE=$(date +'%Y.%m.%d')
+makepkg -l y -c y "$WORKING_DIR/packages/$PLUGIN_NAME-$DATE.tgz"
+MD5=$(md5sum "$WORKING_DIR/packages/$PLUGIN_NAME-$DATE.tgz" | awk '{print $1}')
+echo "$MD5" >"$WORKING_DIR/packages/$PLUGIN_NAME-$DATE.tgz.md5"
 
-sed -i -r "s/(ENTITY version\s*\")[^\"]+\"/\1$VERSION\"/" "$WORKING_DIR/prometheus_node_exporter.plg"
+sed -i -r "s/(ENTITY version\s*\")[^\"]+\"/\1$DATE\"/" "$WORKING_DIR/prometheus_node_exporter.plg"
 sed -i -r "s/(ENTITY md5\s*\")[^\"]+\"/\1$MD5\"/" "$WORKING_DIR/prometheus_node_exporter.plg"
