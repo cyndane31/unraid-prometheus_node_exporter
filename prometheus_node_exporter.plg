@@ -1,101 +1,73 @@
 <?xml version='1.0' standalone='yes'?>
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "prometheus_node_exporter">
-  <!ENTITY author    "ich777">
-  <!ENTITY version   "2025.02.17">
-  <!ENTITY gitURL    "https://github.com/&author;/unraid-&name;/raw/master">
-  <!ENTITY pluginURL "&gitURL;/&name;.plg">
+  <!ENTITY author    "Nick Miller">
+  <!ENTITY version   "v1.9.1">
   <!ENTITY md5       "bc7fe61f4dc29b2960e33b5dab8a9263">
+  <!ENTITY github     "cyndane31/unraid-&name;">
+  <!ENTITY gitURL    "https://github.com/&github;/raw/master">
+  <!ENTITY pluginURL "&gitURL;/&name;.plg">
   <!ENTITY plugin    "/boot/config/plugins/&name;">
   <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
 ]>
 
-<PLUGIN  name="&name;" author="&author;" version="&version;" pluginURL="&pluginURL;" min="6.9.0" support="https://forums.unraid.net/topic/110995-plugin-prometheus-unraid-plugins/">
+<PLUGIN  name="&name;" author="&author;" version="&version;" pluginURL="&pluginURL;" min="6.9.0">
 
 <CHANGES>
 
-###2025.02.17
-- Bumped version - based on node exporter v1.9.0
-
-###2024.07.14
-- Bumped version - based on node exporter v1.8.2
-
-###2023.07.17
-- Bumped version - based on node exporter v1.6.1
-
-###2023.05.27
-- Bumped version - based on node exporter v1.6.0
-
-###2023.02.26
-- Bumped version - based on node exporter v1.5.0
-
-###2021.12.05
-- Bumped version - based on node exporter v1.3.1
-
-###2021.11.18
-- Bumped version - based on node exporter v1.3.0
-
-###2021.08.06
-- Bumped version - based on node exporter v1.2.2
-
-###2021.08.05
-- Bumped version - based on node exporter v1.2.1
-
-###2021.07.15
-- Bumped version - based on node exporter v1.2.0
-
-###2021.06.29a
-- Added icon
-- Removed settings page
-
-###2021.06.29
-- Initial release - based on version v1.1.2
+###1.9.1
+- mirror Node Exporter versioning
+- update pkg_build.sh
+- forked from ich77 v2025.02.17
 
 </CHANGES>
 
+<!-- remove old versions -->
 <FILE Run="/bin/bash">
-<INLINE>
-rm -f $(ls /boot/config/plugins/&name;/&name;*.tgz 2>/dev/null|grep -v '&version;')
-</INLINE>
+  <INLINE>
+  rm -f $(ls /boot/config/plugins/&name;/&name;*.tgz 2>/dev/null | grep -v '&version;')
+  </INLINE>
 </FILE>
 
+<!-- get latest tgz package -->
 <FILE Name="/boot/config/plugins/&name;/&name;-&version;.tgz" Run="upgradepkg --install-new">
-<URL>&gitURL;/packages/&name;-&version;.tgz</URL>
-<MD5>&md5;</MD5>
+  <URL>&gitURL;/packages/&name;-&version;.tgz</URL>
+  <MD5>&md5;</MD5>
 </FILE>
 
+<!-- create local README.md -->
 <FILE Name="&emhttp;/README.md">
-<INLINE>
-**Prometheus Node Exporter**
+  <INLINE>
+  **Prometheus Node Exporter**
 
-Is a slim plugin, that takes informations gathered form your unRAID system and provides it to a Prometheus database. Usage is not limited to Prometheus only. Data can be formated and displayed to any database or graphical node.  
-Export URL: The URL for the exportet metrics is: 'http://YOURunRAIDIP:9100/metrics' (to use it in Prometheus add the target: 'YOURunRAIDIP:9100' to your Prometheus yaml).  
-This Plugin is based on node_exporter: https://github.com/prometheus/node_exporter
-</INLINE>
+  Is a slim plugin, that takes informations gathered form your unRAID system and provides it to a Prometheus database. Usage is not limited to Prometheus only. Data can be formated and displayed to any database or graphical node.  
+  Export URL: The URL for the exportet metrics is: 'http://YOURunRAIDIP:9100/metrics' (to use it in Prometheus add the target: 'YOURunRAIDIP:9100' to your Prometheus yaml).  
+  This Plugin is based on node_exporter: https://github.com/prometheus/node_exporter
+  </INLINE>
 </FILE>
 
 <FILE Run="/bin/bash">
-<INLINE>
+  <INLINE>
 
 #Create settings file if not found
-if [ ! -f "&plugin;/settings.cfg" ]; then
-  echo 'start_parameters=' > "&plugin;/settings.cfg"
-fi
-
-if [ -z "$(pidof prometheus_node_exporter)" ]; then
-  START_PARAMS="$(cat &plugin;/settings.cfg | cut -d '=' -f2-)"
-  echo "-------------Starting Prometheus Node Exporter!--------------"
-  if [ -z "$START_PARAMS" ]; then
-    echo "/usr/bin/prometheus_node_exporter" | at now
-  else
-    echo "/usr/bin/prometheus_node_exporter "$START_PARAMS"" | at now
+  if [ ! -f "&plugin;/settings.cfg" ]; then
+    echo 'start_parameters=' > "&plugin;/settings.cfg"
   fi
-else
-  echo
-  echo "---Nothing to do, Prometheus Node Exporter already started---"
-fi
 
-</INLINE>
+  if [ -z "$(pidof prometheus_node_exporter)" ]; then
+    START_PARAMS="$(cat &plugin;/settings.cfg | cut -d '=' -f2-)"
+    echo "-------------Starting Prometheus Node Exporter!--------------"
+    if [ -z "$START_PARAMS" ]; then
+      echo "/usr/bin/prometheus_node_exporter" | at now
+    else
+      echo "/usr/bin/prometheus_node_exporter "$START_PARAMS"" | at now
+    fi
+  else
+    echo
+    echo "---Nothing to do, Prometheus Node Exporter already started---"
+  fi
+
+  </INLINE>
 </FILE>
 
 <FILE Run="/bin/bash" Method="remove">
