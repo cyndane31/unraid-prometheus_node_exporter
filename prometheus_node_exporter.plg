@@ -53,7 +53,7 @@
 
 #Create settings file if not found
   if [ ! -f "&plugin;/settings.cfg" ]; then
-    echo 'NE_OPTIONS=' > "&plugin;/settings.cfg"
+    echo "NE_OPTIONS='--web.listen-address=:9100'" > "&plugin;/settings.cfg"
   fi
 
   if [ -z "$(pidof &exec;)" ]; then
