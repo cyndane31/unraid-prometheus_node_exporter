@@ -52,11 +52,11 @@
 
 #Create settings file if not found
   if [ ! -f "&plugin;/settings.cfg" ]; then
-    echo "NE_OPTIONS='--web.listen-address=:9100'" > "&plugin;/settings.cfg"
+      echo "NE_OPTIONS='--web.listen-address=:9100' --no-collector.mdadm" "/boot/config/&name;.cfg"
   fi
 
   if [ -z "$(pidof &exec;)" ]; then
-    . "&plugin;/settings.cfg"
+    . "/boot/config/&name;.cfg"
     echo "-------------Starting Prometheus Node Exporter!--------------"
     echo "$NE_OPTIONS"
     echo "/usr/bin/&exec;" | at now 
