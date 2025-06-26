@@ -51,15 +51,18 @@
   <INLINE>
 
 #Create settings file if not found
-  if [ ! -f "&plugin;/settings.cfg" ]; then
-      echo "NE_OPTIONS='--web.listen-address=:9100' --no-collector.mdadm" "/boot/config/&name;.cfg"
+  CFG_FILE="/boot/config/&name;.cfg"
+  if [ ! -f "$CFG_FILE" ]; then
+      echo "NE_OPTIONS='--web.listen-address=:9100' --no-collector.mdadm" "$CFG_FILE"
   fi
 
   if [ -z "$(pidof &exec;)" ]; then
-    . "/boot/config/&name;.cfg"
+    . "$CFG_FILE"
+
     echo "-------------Starting Prometheus Node Exporter!--------------"
+    echo "cmd-line flags from $CFG_FILE:"
     echo "$NE_OPTIONS"
-    echo "/usr/bin/&exec;" | at now 
+    echo "/usr/bin/&exec; $NE_OPTIONS" | at now 
   else
     echo
     echo "---Nothing to do, Prometheus Node Exporter already started---"
