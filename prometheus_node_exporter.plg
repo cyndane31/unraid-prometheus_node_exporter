@@ -53,7 +53,7 @@
 #Create settings file if not found
   CFG_FILE="/boot/config/&name;.cfg"
   if [ ! -f "$CFG_FILE" ]; then
-      echo "NE_OPTIONS='--web.listen-address=:9100' --no-collector.mdadm" > "$CFG_FILE"
+      echo "NE_OPTIONS='--web.listen-address=:9100 --no-collector.mdadm'" > "$CFG_FILE"
   fi
 
   if [ -z "$(pidof &exec;)" ]; then
