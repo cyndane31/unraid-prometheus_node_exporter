@@ -53,16 +53,16 @@
 
 #Create settings file if not found
   if [ ! -f "&plugin;/settings.cfg" ]; then
-    echo 'start_parameters=' > "&plugin;/settings.cfg"
+    echo 'NE_OPTIONS=' > "&plugin;/settings.cfg"
   fi
 
   if [ -z "$(pidof &exec;)" ]; then
-    START_PARAMS="$(cat &plugin;/settings.cfg | cut -d '=' -f2-)"
+    . "&plugin;/settings.cfg"
     echo "-------------Starting Prometheus Node Exporter!--------------"
-    if [ -z "$START_PARAMS" ]; then
-      echo "/usr/bin/&exec;" | at now
+    if [[ -n NE_OPTIONS ]]; then
+      echo "/usr/bin/&exec;" | at now > /var/log/node_exporter.log 2>&1
     else
-      echo "/usr/bin/&exec; "$START_PARAMS"" | at now
+      echo "/usr/bin/&exec; $NE_OPTIONS" | at now > /var/log/node_exporter.log 2>&1
     fi
   else
     echo
@@ -74,21 +74,20 @@
 
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
-
-echo "-------------------------------------------"
-echo "---Uninstalling prometheus_node_exporter---"
-echo "-------------------------------------------"
+  echo "-------------------------------------------"
+  echo "---Uninstalling prometheus_node_exporter---"
+  echo "-------------------------------------------"
 # Remove plugin related files
-kill $(pidof &exec;) 2>/dev/null
-removepkg &name;-&version;
-rm -rf /usr/bin/&exec;
-rm -rf /usr/local/emhttp/plugins/&name;
-rm -rf &plugin;
-echo
-echo "----------------------------------------------------------"
-echo "---Uninstallation of prometheus_node_exporter complete!---"
-echo "----------------------------------------------------------"
-echo
+  kill $(pidof &exec;) 2>/dev/null
+  removepkg &name;-&version;
+  rm -rf /usr/bin/&exec;
+  rm -rf /usr/local/emhttp/plugins/&name;
+  rm -rf &plugin;
+  echo
+  echo "----------------------------------------------------------"
+  echo "---Uninstallation of prometheus_node_exporter complete!---"
+  echo "----------------------------------------------------------"
+  echo
 
 </INLINE>
 </FILE>
