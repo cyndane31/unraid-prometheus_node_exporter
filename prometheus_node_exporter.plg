@@ -23,7 +23,6 @@
 - forked from ich77 v2025.02.17
 
 </CHANGES>
-
 <!-- remove old versions -->
 <FILE Run="/bin/bash">
   <INLINE>
@@ -59,11 +58,8 @@
   if [ -z "$(pidof &exec;)" ]; then
     . "&plugin;/settings.cfg"
     echo "-------------Starting Prometheus Node Exporter!--------------"
-    if [[ -n NE_OPTIONS ]]; then
-      echo "/usr/bin/&exec;" | at now > /var/log/node_exporter.log 2>&amp;1
-    else
-      echo "/usr/bin/&exec; $NE_OPTIONS" | at now > /var/log/node_exporter.log 2>&amp;1
-    fi
+    echo "$NE_OPTIONS"
+    echo "/usr/bin/&exec;" | at now 
   else
     echo
     echo "---Nothing to do, Prometheus Node Exporter already started---"
