@@ -60,9 +60,9 @@
     . "&plugin;/settings.cfg"
     echo "-------------Starting Prometheus Node Exporter!--------------"
     if [[ -n NE_OPTIONS ]]; then
-      echo "/usr/bin/&exec;" | at now > /var/log/node_exporter.log 2>&1
+      echo "/usr/bin/&exec;" | at now > /var/log/node_exporter.log 2>&amp;1
     else
-      echo "/usr/bin/&exec; $NE_OPTIONS" | at now > /var/log/node_exporter.log 2>&1
+      echo "/usr/bin/&exec; $NE_OPTIONS" | at now > /var/log/node_exporter.log 2>&amp;1
     fi
   else
     echo
